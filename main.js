@@ -27,6 +27,9 @@ let doge;
 let pegs = [];
 let slots = [];
 let particles = [];
+let dropFrames = 0;
+let stuckFrames = 0;
+let lastDogeY = 0;
 
 function shortAddress(addr) {
   return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
@@ -97,6 +100,9 @@ function resetDoge() {
   doge.vx = (Math.random() - 0.5) * 2.2;
   doge.vy = 0;
   doge.rot = 0;
+  dropFrames = 0;
+  stuckFrames = 0;
+  lastDogeY = doge.y;
 }
 
 function dropDoge() {
@@ -146,6 +152,33 @@ function update() {
     doge.x += doge.vx;
     doge.y += doge.vy;
     doge.rot += doge.vx * 0.02;
+    dropFrames++;
+
+    const movedDown = doge.y - lastDogeY;
+    const speedNow = Math.hypot(doge.vx, doge.vy);
+    if (Math.abs(movedDown) < 0.08 && speedNow < 0.55) {
+      stuckFrames++;
+    } else {
+      stuckFrames = 0;
+    }
+    lastDogeY = doge.y;
+
+    if (stuckFrames > 55) {
+      doge.vx += (Math.random() < 0.5 ? -1 : 1) * (1.5 + Math.random());
+      doge.vy += 2.4;
+      stuckFrames = 0;
+      resultText = 'Doge got a little nudge.';
+    }
+
+    if (dropFrames > 900) {
+      const nearest = slots.reduce((bestSlot, slot) => {
+        const bestDist = Math.abs(doge.x - (bestSlot.x + bestSlot.w / 2));
+        const dist = Math.abs(doge.x - (slot.x + slot.w / 2));
+        return dist < bestDist ? slot : bestSlot;
+      }, slots[0]);
+      land(nearest);
+      return;
+    }
 
     if (doge.x - doge.r < 24) {
       doge.x = 24 + doge.r;
@@ -164,11 +197,11 @@ function update() {
       if (dist > 0 && dist < min) {
         const nx = dx / dist;
         const ny = dy / dist;
-        doge.x = peg.x + nx * min;
-        doge.y = peg.y + ny * min;
+        doge.x = peg.x + nx * (min + 0.8);
+        doge.y = peg.y + ny * (min + 0.8);
         const dot = doge.vx * nx + doge.vy * ny;
-        doge.vx = (doge.vx - 2 * dot * nx) * pegBounce + nx * 0.4;
-        doge.vy = (doge.vy - 2 * dot * ny) * pegBounce + ny * 0.4;
+        doge.vx = (doge.vx - 2 * dot * nx) * pegBounce + nx * 0.7 + (Math.random() - 0.5) * 0.35;
+        doge.vy = (doge.vy - 2 * dot * ny) * pegBounce + ny * 0.7 + 0.18;
         burst(peg.x, peg.y, '#fff3a8', 5);
       }
     }
