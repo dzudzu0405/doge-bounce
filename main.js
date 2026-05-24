@@ -17,6 +17,23 @@ const bouncePower = -10.8;
 
 let doge, obstacles, coins, particles, score, best, speed, running, gameOver, spawnTimer, coinTimer, lastTime;
 
+function initState() {
+  doge = { x: 150, y: 245, r: 28, vy: 0, rot: 0 };
+  obstacles = [];
+  coins = [];
+  particles = [];
+  score = 0;
+  speed = 4.8;
+  running = false;
+  gameOver = false;
+  spawnTimer = 0;
+  coinTimer = 40;
+  lastTime = performance.now();
+  best = Number(localStorage.getItem('dogeBounceBest') || 0);
+  scoreEl.textContent = '0';
+  bestEl.textContent = best;
+}
+
 function reset() {
   if (!walletConnected) { showWalletRequired(); return; }
   doge = { x: 150, y: 245, r: 28, vy: 0, rot: 0 };
@@ -207,7 +224,7 @@ function draw() {
     ctx.fillStyle = '#9c6b00';
     ctx.font = 'bold 16px system-ui';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('Ð', c.x, c.y + 1);
+    ctx.fillText('D', c.x, c.y + 1);
   }
 
   for (const o of obstacles) {
@@ -296,8 +313,7 @@ window.addEventListener('keydown', e => {
 });
 canvas.addEventListener('pointerdown', bounce);
 
-reset();
-running = false;
+initState();
 startBtn.disabled = true;
 draw();
 requestAnimationFrame(loop);
