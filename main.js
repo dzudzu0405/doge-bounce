@@ -19,7 +19,7 @@ const platformW = 120;
 const platformH = 20;
 
 const dogeImg = new Image();
-dogeImg.src = 'assets/doge-oh.png';
+dogeImg.src = 'assets/doge-oh-v2.png?v=2';
 
 let walletConnected = false;
 let walletAddress = '';
@@ -397,4 +397,5 @@ function initVisualOnly() {
   }
   updateHud();
 }
+
 
