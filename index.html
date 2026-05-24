@@ -1,0 +1,40 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DogeBounce</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hud">
+      <div>
+        <h1>DogeBounce</h1>
+        <p>Bounce, dodge, collect. Much wow.</p>
+      </div>
+      <div class="stats">
+        <span>Score: <b id="score">0</b></span>
+        <span>Best: <b id="best">0</b></span>
+      </div>
+    </section>
+
+    <section class="wallet-panel">
+      <div>
+        <h2>Wallet Login</h2>
+        <p id="walletStatus">Connect MetaMask to unlock the game. No transaction, no gas fee.</p>
+      </div>
+      <button id="connectWalletBtn">Connect MetaMask</button>
+    </section>
+
+    <canvas id="game" width="960" height="540" aria-label="DogeBounce game canvas"></canvas>
+
+    <section class="controls">
+      <button id="startBtn" disabled>Start / Restart</button>
+      <p><b>Controls:</b> Space / ↑ / click / tap to bounce</p>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
