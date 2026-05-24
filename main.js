@@ -1,4 +1,4 @@
-﻿const canvas = document.getElementById('game');
+const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const scoreEl = document.getElementById('score');
 const bestEl = document.getElementById('best');
@@ -19,7 +19,7 @@ const platformW = 120;
 const platformH = 20;
 
 const dogeImg = new Image();
-dogeImg.src = 'assets/doge-oh-v2.png?v=2';
+dogeImg.src = 'assets/doge-oh-v2.png?v=3';
 
 let walletConnected = false;
 let walletAddress = '';
@@ -256,7 +256,9 @@ function drawPlayer() {
   ctx.save();
   ctx.globalAlpha = damageCooldown > 0 && Math.floor(damageCooldown / 5) % 2 === 0 ? 0.45 : 1;
   if (dogeImg.complete && dogeImg.naturalWidth) {
-    ctx.drawImage(dogeImg, sx - 10, sy - 10, player.w + 20, player.h + 20);
+    const renderH = 122;
+    const renderW = renderH * (dogeImg.naturalWidth / dogeImg.naturalHeight);
+    ctx.drawImage(dogeImg, sx + player.w / 2 - renderW / 2, sy + player.h - renderH + 8, renderW, renderH);
   } else {
     ctx.fillStyle = '#d99532';
     ctx.beginPath();
