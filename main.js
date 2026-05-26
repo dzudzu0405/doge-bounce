@@ -20,6 +20,8 @@ const platformH = 20;
 
 const dogeImg = new Image();
 dogeImg.src = 'assets/doge-oh-v2.png?v=3';
+const bgImg = new Image();
+bgImg.src = 'assets/background.jpg?v=1';
 
 let walletConnected = false;
 let walletAddress = '';
@@ -313,12 +315,22 @@ function drawBomb(b) {
 }
 
 function draw() {
-  const bg = ctx.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, '#dff9ff');
-  bg.addColorStop(0.55, '#8ddfff');
-  bg.addColorStop(1, '#4776c7');
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, W, H);
+  if (bgImg.complete && bgImg.naturalWidth) {
+    const scale = Math.max(W / bgImg.naturalWidth, H / bgImg.naturalHeight);
+    const sw = bgImg.naturalWidth * scale;
+    const sh = bgImg.naturalHeight * scale;
+    const parallaxY = (Math.abs(cameraY) * 0.08) % Math.max(1, sh - H);
+    ctx.drawImage(bgImg, (W - sw) / 2, (H - sh) / 2 + parallaxY * 0.25, sw, sh);
+    ctx.fillStyle = 'rgba(0, 18, 42, .18)';
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#dff9ff');
+    bg.addColorStop(0.55, '#8ddfff');
+    bg.addColorStop(1, '#4776c7');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+  }
 
   // Snow dots
   ctx.fillStyle = 'rgba(255,255,255,.62)';
