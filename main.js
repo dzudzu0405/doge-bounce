@@ -21,7 +21,7 @@ const platformH = 20;
 const dogeImg = new Image();
 dogeImg.src = 'assets/doge-oh-v2.png?v=3';
 const bgImg = new Image();
-bgImg.src = 'assets/background.jpg?v=1';
+bgImg.src = 'assets/background.jpg?v=2';
 
 let walletConnected = false;
 let walletAddress = '';
@@ -320,8 +320,11 @@ function draw() {
     const sw = bgImg.naturalWidth * scale;
     const sh = bgImg.naturalHeight * scale;
     const parallaxY = (Math.abs(cameraY) * 0.08) % Math.max(1, sh - H);
-    ctx.drawImage(bgImg, (W - sw) / 2, (H - sh) / 2 + parallaxY * 0.25, sw, sh);
-    ctx.fillStyle = 'rgba(0, 18, 42, .18)';
+    ctx.save();
+    ctx.filter = 'blur(2.5px) brightness(0.62) saturate(0.82)';
+    ctx.drawImage(bgImg, (W - sw) / 2 - 8, (H - sh) / 2 + parallaxY * 0.25 - 8, sw + 16, sh + 16);
+    ctx.restore();
+    ctx.fillStyle = 'rgba(0, 18, 42, .34)';
     ctx.fillRect(0, 0, W, H);
   } else {
     const bg = ctx.createLinearGradient(0, 0, 0, H);
